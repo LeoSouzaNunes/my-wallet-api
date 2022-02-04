@@ -1,21 +1,9 @@
 import sanitizeData from "../util/sanitizer.js";
 import bcrypt from "bcrypt";
-import joi from "joi";
 import { v4 as uuid } from "uuid";
 import db from "../database/db.js";
 
 async function createUser(req, res) {
-    const signUpSchema = joi.object({
-        name: joi.string().required(),
-        email: joi.string().email().required(),
-        password: joi.string().required(),
-    });
-
-    const validation = signUpSchema.validate(req.body);
-    if (validation.error) {
-        res.sendStatus(422);
-        return;
-    }
     const hashedPassword = bcrypt.hashSync(req.body.password, 10);
 
     const user = {
@@ -40,16 +28,6 @@ async function createUser(req, res) {
 }
 
 async function checkLogin(req, res) {
-    const loginSchema = joi.object({
-        email: joi.string().email().required(),
-        password: joi.string().required(),
-    });
-
-    const validation = loginSchema.validate(req.body);
-    if (validation.error) {
-        res.sendStatus(422);
-        return;
-    }
     try {
         const user = await db.collection("users").findOne({ email: req.body.email });
 

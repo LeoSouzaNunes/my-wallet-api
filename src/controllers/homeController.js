@@ -13,10 +13,9 @@ async function getUserData(req, res) {
         }
 
         const id = session.userId.toString();
-        console.log(session.userId.toString());
 
         if (userId !== id) {
-            res.sendStatus(404);
+            res.sendStatus(401);
             return;
         }
 
