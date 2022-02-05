@@ -22,7 +22,16 @@ async function getUserData(req, res) {
         const userData = await db
             .collection("users")
             .findOne({ _id: new ObjectId(userId) });
-        res.status(200).send(userData.name);
+
+        const userTrades = await db
+            .collection("trades")
+            .findOne({ userId: new ObjectId(userId) });
+
+        const dataToSend = {
+            name: userData.name,
+            history: userTrades?.history,
+        };
+        res.status(200).send(dataToSend);
     } catch (error) {
         console.log(error);
         res.sendStatus(500);

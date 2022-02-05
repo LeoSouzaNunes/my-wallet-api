@@ -3,20 +3,7 @@ import joi from "joi";
 import dayjs from "dayjs";
 
 async function postDeposit(req, res) {
-    const depositSchema = joi.object({
-        value: joi.number().required(),
-        type: joi.string().valid("deposit").required(),
-        text: joi.string().max(30).required(),
-    });
-
-    const validation = depositSchema.validate(req.body);
-    if (validation.error) {
-        res.sendStatus(422);
-        return;
-    }
-
     const depositData = { ...req.body, time: dayjs().format("DD/MM") };
-    console.log(depositData);
 
     const token = req.headers.authorization?.replace("Bearer ", "");
 
@@ -59,20 +46,7 @@ async function postDeposit(req, res) {
 }
 
 async function postWithdraw(req, res) {
-    const withdrawSchema = joi.object({
-        value: joi.number().required(),
-        type: joi.string().valid("withdraw").required(),
-        text: joi.string().max(30).required(),
-    });
-
-    const validation = withdrawSchema.validate(req.body);
-    if (validation.error) {
-        res.sendStatus(422);
-        return;
-    }
-
     const withdrawData = { ...req.body, time: dayjs().format("DD/MM") };
-    console.log(withdrawData);
 
     const token = req.headers.authorization?.replace("Bearer ", "");
 

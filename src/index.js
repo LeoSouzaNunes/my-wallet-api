@@ -10,4 +10,4 @@ app.use(express.json());
 app.use(authRouter);
 app.use(userRouter);
 
-app.listen(5000, () => console.log("Running at http://localhost:5000"));
+app.listen(process.env.PORT, () => console.log("Running at http://localhost:5000"));
