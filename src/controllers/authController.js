@@ -15,7 +15,7 @@ async function createUser(req, res) {
     try {
         const checkUser = await db.collection("users").findOne({ email: user.email });
         if (checkUser) {
-            res.sendStatus(409);
+            res.status(409).send("Email já cadastrado");
             return;
         }
 
@@ -38,7 +38,7 @@ async function checkLogin(req, res) {
             return;
         }
 
-        res.sendStatus(401);
+        res.status(401).send("Email ou senha inválida");
     } catch (error) {
         console.log(error);
         res.sendStatus(500);

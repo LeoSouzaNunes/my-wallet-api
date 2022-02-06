@@ -3,7 +3,7 @@ import signUpSchema from "../schemas/signUpSchema.js";
 function validateSignUpSchema(req, res, next) {
     const validation = signUpSchema.validate(req.body);
     if (validation.error) {
-        res.sendStatus(422);
+        res.status(422).send(validation.error.details[0].message);
         return;
     }
 

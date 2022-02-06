@@ -1,22 +1,12 @@
 import db from "../database/db.js";
-import joi from "joi";
 import dayjs from "dayjs";
 
 async function postDeposit(req, res) {
     const depositData = { ...req.body, time: dayjs().format("DD/MM") };
 
-    const token = req.headers.authorization?.replace("Bearer ", "");
-
     try {
-        const session = await db.collection("sessions").findOne({ token });
-        if (!session) {
-            res.sendStatus(401);
-            return;
-        }
-
-        const id = session.userId;
-
-        const userTradeData = await db.collection("trades").findOne({ userId: id });
+        const userTradeData = res.locals.user.userTradeData;
+        const id = res.locals.user.id;
         if (!userTradeData) {
             await db.collection("trades").insertOne({
                 userId: id,
@@ -48,18 +38,9 @@ async function postDeposit(req, res) {
 async function postWithdraw(req, res) {
     const withdrawData = { ...req.body, time: dayjs().format("DD/MM") };
 
-    const token = req.headers.authorization?.replace("Bearer ", "");
-
     try {
-        const session = await db.collection("sessions").findOne({ token });
-        if (!session) {
-            res.sendStatus(401);
-            return;
-        }
-
-        const id = session.userId;
-
-        const userTradeData = await db.collection("trades").findOne({ userId: id });
+        const userTradeData = res.locals.user.userTradeData;
+        const id = res.locals.user.id;
         if (!userTradeData) {
             await db.collection("trades").insertOne({
                 userId: id,
